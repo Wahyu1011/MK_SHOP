@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MiftahulKhoir - Shop</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* Dark Coffee Shop Theme */
+      :root {
+        --bg: #0b0b0b;
+        --panel: #121212;
+        --muted: #bdbdbd;
+        --accent: #c07a3a; /* coffee brown */
+        --accent-2: #ffd89b; /* warm cream */
+        --glass: rgba(255, 255, 255, 0.03);
+        --shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+        --radius: 12px;
+        --transition: all 0.25s ease;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        font-size: 62.5%;
+      }
+      body {
+        margin: 0;
+        font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        background: linear-gradient(180deg, var(--bg), #070707);
+        color: var(--muted);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(6px);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        padding: 1.6rem 6%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        z-index: 999;
+        box-shadow: var(--shadow);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .logo img {
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+      .logo h1 {
+        font-size: 2.2rem;
+        color: var(--accent-2);
+        margin: 0;
+        line-height: 1;
+      }
+      .logo small {
+        display: block;
+        font-size: 1.1rem;
+        color: var(--muted);
+      }
+
+      nav.navbar ul {
+        display: flex;
+        gap: 2rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      nav.navbar a {
+        font-size: 1.6rem;
+        color: var(--muted);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+      }
+      nav.navbar a:hover,
+      nav.navbar a.active {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .icons {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+      .icons i {
+        font-size: 1.9rem;
+        color: var(--muted);
+        cursor: pointer;
+      }
+      .icons i:hover {
+        color: var(--accent-2);
+      }
+
+      .search-form,
+      .shopping-cart {
+        position: absolute;
+        top: 100%;
+        right: 2rem;
+        transform: translateY(10px);
+        display: none;
+      }
+      .search-form.active,
+      .shopping-cart.active {
+        display: block;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 8rem 6% 6rem 6%;
+        display: flex;
+        align-items: center;
+        gap: 4rem;
+      }
+      .hero .left {
+        max-width: 58rem;
+      }
+      .hero h2 {
+        font-size: 5.2rem;
+        color: #fff;
+        margin: 0 0 1.2rem 0;
+      }
+      .hero p {
+        font-size: 1.8rem;
+        color: var(--muted);
+        margin-bottom: 2rem;
+      }
+      .btn {
+        display: inline-block;
+        padding: 1rem 2.2rem;
+        border-radius: 10px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 1.6rem;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .btn:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 30px rgba(192, 122, 58, 0.15);
+      }
+
+      .hero .right {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+      }
+      .cup {
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: linear-gradient(180deg, #111, #1a1a1a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+      }
+      .cup img {
+        width: 70%;
+      }
+
+      section {
+        padding: 4rem 6%;
+      }
+      h3.heading {
+        color: #fff;
+        font-size: 3.2rem;
+        margin-bottom: 2rem;
+      }
+
+      /* Filters */
+      .filter-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .filter-buttons .btn {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        color: var(--muted);
+      }
+      .filter-buttons .btn.active {
+        background: rgba(255, 255, 255, 0.02);
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.06);
+      }
+
+      /* Product Grid */
+      .box-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
+        gap: 2rem;
+      }
+      .box {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        padding: 1.6rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: var(--transition);
+      }
+      .box:hover {
+        transform: translateY(-6px);
+      }
+      .box .image {
+        height: 18rem;
+        border-radius: 10px;
+        overflow: hidden;
+        background: var(--glass);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .box .image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .box h4 {
+        color: #fff;
+        font-size: 1.8rem;
+        margin: 1rem 0 0.5rem 0;
+      }
+      .box .desc {
+        font-size: 1.4rem;
+        color: var(--muted);
+        margin-bottom: 0.8rem;
+      }
+      .box .price {
+        font-size: 1.6rem;
+        color: var(--accent-2);
+        margin-bottom: 1rem;
+      }
+      .btn-container {
+        display: flex;
+        gap: 0.8rem;
+      }
+      .btn-secondary {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: var(--muted);
+        padding: 0.9rem 1.4rem;
+        border-radius: 8px;
+      }
+
+      /* Modal */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+      }
+      .modal-overlay.active {
+        display: flex;
+      }
+      .modal-content {
+        width: min(960px, 95%);
+        background: var(--panel);
+        border-radius: 12px;
+        padding: 2rem;
+        display: flex;
+        gap: 1.6rem;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+      }
+      .modal-image {
+        flex: 1;
+      }
+      .modal-image img {
+        width: 100%;
+        border-radius: 8px;
+      }
+      .modal-details {
+        flex: 1;
+        color: var(--muted);
+      }
+      .close-btn {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.6rem;
+        font-size: 2.4rem;
+        color: var(--muted);
+        cursor: pointer;
+      }
+
+      /* Cart */
+      .shopping-panel {
+        position: fixed;
+        right: 2rem;
+        bottom: 2rem;
+        background: var(--panel);
+        padding: 1rem;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        width: 320px;
+        display: none;
+      }
+      .shopping-panel.active {
+        display: block;
+      }
+      .shopping-panel h4 {
+        color: #fff;
+        margin: 0 0 1rem 0;
+      }
+      .cart-item {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      .cart-item img {
+        width: 56px;
+        height: 56px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+      .cart-item .meta {
+        font-size: 1.3rem;
+        color: var(--muted);
+      }
+      .total {
+        font-size: 1.6rem;
+        color: var(--accent-2);
+        margin-top: 1rem;
+      }
+
+      footer {
+        padding: 3rem 6%;
+        color: var(--muted);
+        border-top: 1px solid rgba(255, 255, 255, 0.02);
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .hero {
+          flex-direction: column;
+          padding-top: 6rem;
+        }
+        .cup {
+          width: 260px;
+          height: 260px;
+        }
+      }
+      @media (max-width: 600px) {
+        nav.navbar {
+          display: none;
+        }
+        header {
+          padding: 1rem 4%;
+        }
+        html {
+          font-size: 56%;
+        }
+        .box .image {
+          height: 14rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="img/logo_mk.png" alt="BlackBean" />
+        <div>
+          <h1>MiftahulKhoir</h1>
+          <small>Shop &amp; Buy</small>
+        </div>
+      </div>
+
+      <nav class="navbar">
+        <ul>
+          <li><a href="#" class="active">Home</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#about">Tentang</a></li>
+          <li><a href="#contact">Kontak</a></li>
+        </ul>
+      </nav>
+
+      <div class="icons">
+        <i class="fas fa-search" id="search-btn"></i>
+        <i class="fas fa-shopping-cart" id="cart-btn"></i>
+        <i class="fas fa-user" id="login-btn"></i>
+      </div>
+
+      <div class="search-form" id="search-form">
+        <input
+          type="search"
+          placeholder="Cari menu..."
+          id="search-box"
+          style="
+            padding: 0.8rem 1rem;
+            width: 260px;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+          "
+        />
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="left">
+          <h2>Rasakan Kopi yang Menghangatkan Jiwa</h2>
+          <p>
+            Tempatnya Madu, Jamu, dan Teh herbal berkumpul, <br />In Syaa Allah
+            sebagai perantara pengobatan segala macam penyakit, Perantara
+            pengabul segala macam hajat. <br />
+          </p>
+
+          <a class="btn" href="#menu">Lihat Menu</a>
+        </div>
+        <div class="right">
+          <div class="cup">
+            <img src="img/logo_mk.png" alt="kopi" />
+          </div>
+        </div>
+      </section>
+
+      <section id="menu">
+        <h3 class="heading">
+          Menu <span style="color: var(--accent-2)">Unggulan</span>
+        </h3>
+
+        <div class="filter-buttons">
+          <button class="btn active" data-filter="all">Semua</button>
+          <button class="btn" data-filter="coffee">Kopi</button>
+          <button class="btn" data-filter="madu">Madu</button>
+          <button class="btn" data-filter="teh">Teh/ Obat-obatan Herbal</button>
+        </div>
+
+        <div class="box-container" id="product-grid"></div>
+      </section>
+
+      <!-- Modal -->
+      <div class="modal-overlay" id="product-modal">
+        <div class="modal-content">
+          <i class="fas fa-times close-btn" id="close-modal"></i>
+          <div class="modal-image">
+            <img id="modal-img" src="" alt="product" />
+          </div>
+          <div class="modal-details">
+            <h2 id="modal-title" style="color: #fff; margin-top: 0"></h2>
+            <p id="modal-desc"></p>
+            <div id="modal-stars" style="margin: 0.6rem 0"></div>
+            <div
+              id="modal-price"
+              style="font-weight: 600; color: var(--accent-2)"
+            ></div>
+            <div style="margin-top: 1.4rem">
+              <button class="btn" id="modal-add">Tambah ke Keranjang</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating cart panel -->
+      <div class="shopping-panel" id="shopping-panel">
+        <h4>Keranjang</h4>
+        <div id="cart-items-panel"></div>
+        <div class="total">Total: Rp <span id="cart-total">0</span></div>
+        <div style="margin-top: 1rem; display: flex; gap: 0.6rem">
+          <button class="btn" onclick="checkoutWA()">Checkout</button
+          ><button class="btn-secondary" onclick="toggleCart()">Tutup</button>
+        </div>
+      </div>
+
+      <section id="about">
+        <h3 class="heading">
+          Tentang <span style="color: var(--accent-2)">Miftahul Khoir</span>
+        </h3>
+        <p
+          style="
+            max-width: 70rem;
+            color: var(--muted);
+            font-size: 1.6rem;
+            line-height: 1.7;
+          "
+        >
+          Miftahul Khoir adalah sebuah majelis sholawat yang mempelajari ilmu
+          hikmah dan in syaa allah bersanad langsung dengan Kh. Ahmad Jauhari
+          Umar Pasuruan. Salah Satu ulama yang terkenal akan ilmu hikmahnya,
+          yang mengarang kitab Jawahirul Hikmah. Selain itu beliau juga
+          mengarang kitab Manaqib Jawahirul Ma'ani. Selain dua kitab tersebut,
+          Mbah Jauhari Umar masih mengarang kitab-kitab lainnya.
+        </p>
+      </section>
+
+      <section id="contact">
+        <h3 class="heading">Kontak</h3>
+        <p style="color: var(--muted); font-size: 1.4rem">
+          Telepon: +62 857-1260-2367 | Email: miftahulkhoirtusam@gmail.com
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          gap: 2rem;
+          flex-wrap: wrap;
+          align-items: center;
+        "
+      >
+        <div>
+          <strong style="color: #fff; font-size: 1.6rem">MiftahulKhoir</strong>
+          <div style="color: var(--muted); font-size: 1.3rem">
+            Shop &amp; Buy — &copy; 2025
+          </div>
+        </div>
+        <div style="color: var(--muted); font-size: 1.3rem">
+          Jalan Tusam Raya No.6, Kec. Banyumanik, Kab. Semarang, Jawa Tengah,
+          Indonesia
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Elements
+      const filterButtons = document.querySelectorAll(".filter-buttons .btn");
+      const grid = document.getElementById("product-grid");
+      const modal = document.getElementById("product-modal");
+      const modalImg = document.getElementById("modal-img");
+      const modalTitle = document.getElementById("modal-title");
+      const modalDesc = document.getElementById("modal-desc");
+      const modalStars = document.getElementById("modal-stars");
+      const modalPrice = document.getElementById("modal-price");
+      const modalAdd = document.getElementById("modal-add");
+      const closeModalBtn = document.getElementById("close-modal");
+      const cartPanel = document.getElementById("shopping-panel");
+      const cartItemsPanel = document.getElementById("cart-items-panel");
+      const cartTotal = document.getElementById("cart-total");
+
+      // Sample menu data
+      const products = [
+        {
+          id: 1,
+          name: "Mustika Dara",
+          price: 22000,
+          category: "teh",
+          image: "img/mustikadara.jpeg",
+          stars: 5,
+          desc: "Uncaria Gambir Folium 60 mg, Quercus Lusitanica Fructus 75 mg, Parameriae Laevigata Cortex 50 mg ",
+        },
+        {
+          id: 2,
+          name: "Liong Tea",
+          price: 28000,
+          category: "teh",
+          image: "img/liongtea.jpeg",
+          stars: 5,
+          desc: "Camellia Sinesia (Teh Hitam) 32,3 gr, Camellia Sinesia (Teh Hijau) 32,8 gr , Camellia Asiatica 1,9 gr",
+        },
+        {
+          id: 3,
+          name: "Kopi Original",
+          price: 20000,
+          category: "coffee",
+          image: "img/kopiori.jpeg",
+          stars: 4,
+          desc: "Kopi Original Deplok Asli.",
+        },
+        {
+          id: 4,
+          name: "Kopi Zanjibil Rempah",
+          price: 32000,
+          category: "coffee",
+          image: "img/kopiori.jpeg",
+          stars: 5,
+          desc: "Kopi, Jahe, Kapulaga.",
+        },
+        {
+          id: 5,
+          name: "Madu Manis ASMA' 1313",
+          price: 18000,
+          category: "madu",
+          image: "img/madu1.jpeg",
+          stars: 4,
+          desc: "Madu manis murni dari alam",
+        },
+        {
+          id: 6,
+          name: "Madu Pahit ASMA' 1313",
+          price: 20000,
+          category: "madu",
+          image: "img/madu2.jpeg",
+          stars: 4,
+          desc: "Madu pahit murni dari alam",
+        },
+      ];
+
+      // Render products
+      function displayProducts() {
+        grid.innerHTML = "";
+        products.forEach((p) => {
+          const box = document.createElement("div");
+          box.className = "box " + p.category;
+          box.innerHTML = `
+            <div class="image"><img src="${p.image}" alt="${p.name}"></div>
+            <h4>${p.name}</h4>
+            <div class="desc">${p.desc}</div>
+            <div class="price">Rp ${p.price.toLocaleString("id-ID")}</div>
+            <div class="btn-container">
+              <button class="btn-secondary view-product" data-id="${
+                p.id
+              }">Detail</button>
+              <button class="btn add-to-cart" data-id="${p.id}">Tambah</button>
+            </div>
+          `;
+          grid.appendChild(box);
+        });
+
+        // attach handlers
+        document.querySelectorAll(".view-product").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = parseInt(btn.dataset.id);
+            const prod = products.find((x) => x.id === id);
+            showProductDetail(prod);
+          });
+        });
+
+        document.querySelectorAll(".add-to-cart").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            addToCart(parseInt(btn.dataset.id));
+          });
+        });
+      }
+
+      // Filters
+      filterButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const f = btn.dataset.filter;
+          document.querySelectorAll(".box").forEach((box) => {
+            if (f === "all" || box.classList.contains(f))
+              box.style.display = "block";
+            else box.style.display = "none";
+          });
+        });
+      });
+
+      // Modal functions
+      function showProductDetail(prod) {
+        modalImg.src = prod.image;
+        modalTitle.textContent = prod.name;
+        modalDesc.textContent = prod.desc;
+        modalStars.textContent =
+          "★".repeat(prod.stars) + "☆".repeat(5 - prod.stars);
+        modalPrice.textContent = "Rp " + prod.price.toLocaleString("id-ID");
+        modalAdd.dataset.id = prod.id;
+        modal.classList.add("active");
+      }
+      closeModalBtn.addEventListener("click", () =>
+        modal.classList.remove("active")
+      );
+      window.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.remove("active");
+      });
+
+      // Cart
+      let cart = [];
+      function addToCart(id) {
+        const prod = products.find((p) => p.id === id);
+        if (!prod) return;
+        const exist = cart.find((i) => i.id === id);
+        if (exist) exist.qty++;
+        else cart.push({ ...prod, qty: 1 });
+        updateCartUI();
+        toast(`${prod.name} ditambahkan`);
+      }
+
+      function removeFromCart(id) {
+        cart = cart.filter((i) => i.id !== id);
+        updateCartUI();
+      }
+      function updateCartUI() {
+        cartItemsPanel.innerHTML = "";
+        let total = 0;
+        cart.forEach((item) => {
+          total += item.price * item.qty;
+          const div = document.createElement("div");
+          div.className = "cart-item";
+          div.innerHTML = `<img src="${item.image}" alt="${
+            item.name
+          }"><div class="meta">${item.name}<br>Rp ${item.price.toLocaleString(
+            "id-ID"
+          )} x ${
+            item.qty
+          }</div><div style="margin-left:auto;"><button class='btn-secondary' data-id='${
+            item.id
+          }'>Hapus</button></div>`;
+          cartItemsPanel.appendChild(div);
+        });
+        cartTotal.textContent = total.toLocaleString("id-ID");
+        document
+          .querySelectorAll(".cart-item .btn-secondary")
+          .forEach((b) =>
+            b.addEventListener("click", () =>
+              removeFromCart(parseInt(b.dataset.id))
+            )
+          );
+      }
+
+      function toggleCart() {
+        cartPanel.classList.toggle("active");
+      }
+
+      // small toast
+      function toast(msg) {
+        const el = document.createElement("div");
+        el.style.position = "fixed";
+        el.style.right = "20px";
+        el.style.bottom = "20px";
+        el.style.background = "var(--accent)";
+        el.style.color = "#111";
+        el.style.padding = "0.8rem 1rem";
+        el.style.borderRadius = "8px";
+        el.style.boxShadow = "0 10px 30px rgba(0,0,0,0.4)";
+        el.textContent = msg;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 2200);
+      }
+
+      // Checkout via WA
+      function checkoutWA() {
+        if (cart.length === 0) {
+          alert("Keranjang kosong!");
+          return;
+        }
+        const nama = prompt("Nama lengkap:");
+        if (!nama) return;
+        let pesan = `Halo, saya mau pesan:\n\n`;
+        let total = 0;
+        cart.forEach((it, i) => {
+          const sub = it.price * it.qty;
+          total += sub;
+          pesan += `${i + 1}. ${it.name} x ${it.qty} = Rp ${sub.toLocaleString(
+            "id-ID"
+          )}\n`;
+        });
+        pesan += `\nTotal: Rp ${total.toLocaleString("id-ID")}\nNama: ${nama}`;
+        const nomor = "+62813XXXXXXX";
+        const url = `https://wa.me/${nomor.replace(
+          "+",
+          ""
+        )}?text=${encodeURIComponent(pesan)}`;
+        window.open(url, "_blank");
+      }
+
+      // header icon actions
+      document.getElementById("cart-btn")?.addEventListener("click", () => {
+        cartPanel.classList.toggle("active");
+      });
+      document.getElementById("search-btn")?.addEventListener("click", () => {
+        const f = document.getElementById("search-form");
+        f.classList.toggle("active");
+      });
+
+      // init
+      displayProducts();
+    </script>
+  </body>
+</html>
